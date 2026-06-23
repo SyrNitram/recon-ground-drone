@@ -297,8 +297,6 @@ gap between building the drone and putting it online.
 ## Links
 
 - GitHub repo: https://github.com/SyrNitram/recon-ground-drone
-- MakerWorld: model 2815863 — *R6 Recon Ground Drone (3D Printed RC CYBERBRICK)*
-- Steam Workshop: https://steamcommunity.com/sharedfiles/filedetails/?id=2356750371
 
 ---
 
