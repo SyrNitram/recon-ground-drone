@@ -19,18 +19,13 @@ repo pour l'historique.
 ## Démo
 
 <p align="center">
-  <img src="images/hero-lit.jpg" alt="Le drone fini, peint, avec la rampe LED allumée" width="660">
-  <br><em>Le drone terminé — peint, avec la rampe LED allumée.</em>
-</p>
-
-<p align="center">
-  <img src="images/app-control.gif" alt="Pilotage depuis le téléphone avec le flux caméra en direct" width="260">
-  <br><em>Pilotage depuis le téléphone : flux caméra en direct en haut, joystick virtuel en bas. Clip complet : <a href="media/app-control.mp4"><code>media/app-control.mp4</code></a></em>
+  <img src="images/render-vs-print-1.jpg" alt="Le drone imprimé devant son rendu SolidWorks" width="660">
+  <br><em>Le drone imprimé à côté de son rendu SolidWorks d'origine.</em>
 </p>
 
 <p align="center">
   <img src="images/demo-drive.gif" alt="Le drone roule dans la pièce" width="420">
-  <br><em>La même chose, filmée de l'extérieur. Clip complet : <a href="media/demo-drive.mp4"><code>media/demo-drive.mp4</code></a></em>
+  <br><em>Oui, ça roule pour de vrai. Clip complet : <a href="media/demo-drive.mp4"><code>media/demo-drive.mp4</code></a></em>
 </p>
 
 ## Un peu d'histoire
@@ -111,8 +106,8 @@ Ce qui est déjà en place dans le firmware (versions ESP32-CAM, sauf mention co
 
 J'ai gardé les différentes étapes plutôt que de tout écraser, ça peut servir.
 
-**Mécanique (CAO) —** les fichiers 3D ne sont pas encore dans cette archive (trop
-lourds), je les ajoute dans un dossier `cad/`.
+**Mécanique (CAO) —** les fichiers 3D sont disponibles en téléchargement dans la
+[dernière release](https://github.com/SyrNitram/recon-ground-drone/releases/latest) (`cad.zip`).
 
 - **V1.0** — la première version complète. Conçue entre mai et octobre 2022, c'est
   celle avec laquelle tout a commencé.
@@ -136,8 +131,9 @@ lourds), je les ajoute dans un dossier `cad/`.
 
 ## Les fichiers 3D (CAO)
 
-> Les fichiers 3D ne sont pas encore dans cette archive (trop lourds). Je les ajoute
-> dans un dossier `cad/`.
+> 📦 **Télécharger les fichiers 3D :** ils sont attachés à la
+> [dernière release](https://github.com/SyrNitram/recon-ground-drone/releases/latest)
+> sous forme de `cad.zip` (trop lourds pour la liste principale des fichiers).
 
 Quelques avertissements honnêtes avant d'imprimer :
 
@@ -163,10 +159,10 @@ Quelques avertissements honnêtes avant d'imprimer :
 firmware/      le code des cartes (voir versions ci-dessus)
 test-sketches/ croquis de test isolés (caméra, moteurs)
 webui/         les interfaces web de pilotage
-cad/           les modèles 3D (à ajouter)
+(CAO)          modèles 3D — à télécharger dans Releases → cad.zip (SolidWorks)
 hardware/      la BOM (nomenclature) et quelques docs de référence
 images/        photos et GIF utilisés dans ce README
-media/         vidéos de démo (pilotage app, drone, LED, assemblage)
+media/         vidéos de démo (pilotage, LED, assemblage)
 ```
 
 ## Matériel
@@ -269,10 +265,7 @@ intéresse, même logique pour le WiFi (placeholders dans `wifi_com.h`).
 ## Galerie
 
 <p align="center">
-  <img src="images/render-vs-print-1.jpg" alt="Rendu vs impression, de face" width="49%">
   <img src="images/render-vs-print-2.jpg" alt="Rendu vs impression, vue de côté" width="49%">
-</p>
-<p align="center">
   <img src="images/build-electronics.jpg" alt="Le drone ouvert, électronique visible" width="49%">
 </p>
 

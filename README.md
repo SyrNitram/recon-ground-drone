@@ -18,18 +18,13 @@ just below), which I've kept in the repo for the record.
 ## Demo
 
 <p align="center">
-  <img src="images/hero-lit.jpg" alt="The finished, painted drone with its LED bar lit" width="660">
-  <br><em>The finished build — painted, with the LED bar lit.</em>
-</p>
-
-<p align="center">
-  <img src="images/app-control.gif" alt="Driving from the phone with the live camera feed" width="260">
-  <br><em>Driving it from the phone: live camera feed up top, virtual joystick below. Full clip: <a href="media/app-control.mp4"><code>media/app-control.mp4</code></a></em>
+  <img src="images/render-vs-print-1.jpg" alt="The printed drone in front of its SolidWorks render" width="660">
+  <br><em>The printed drone next to its original SolidWorks render.</em>
 </p>
 
 <p align="center">
   <img src="images/demo-drive.gif" alt="Driving the drone around the room" width="420">
-  <br><em>Same thing, filmed from outside. Full clip: <a href="media/demo-drive.mp4"><code>media/demo-drive.mp4</code></a></em>
+  <br><em>Yes, it actually drives. Full clip: <a href="media/demo-drive.mp4"><code>media/demo-drive.mp4</code></a></em>
 </p>
 
 ## A bit of history
@@ -106,8 +101,8 @@ What's already in place in the firmware (ESP32-CAM versions, unless noted otherw
 
 I kept the various stages rather than overwriting everything — it can be useful.
 
-**Mechanics (CAD) —** the 3D files aren't in this archive yet (too heavy); I'm adding
-them in a `cad/` folder.
+**Mechanics (CAD) —** the 3D files are available as a download in the
+[latest release](https://github.com/SyrNitram/recon-ground-drone/releases/latest) (`cad.zip`).
 
 - **V1.0** — the first complete version. Designed between May and October 2022, it's
   the one it all started with.
@@ -131,8 +126,9 @@ them in a `cad/` folder.
 
 ## The 3D files (CAD)
 
-> The 3D files aren't in this archive yet (too heavy). I'm adding them in a `cad/`
-> folder.
+> 📦 **Download the 3D files:** they're attached to the
+> [latest release](https://github.com/SyrNitram/recon-ground-drone/releases/latest)
+> as `cad.zip` (too heavy to sit in the main file list).
 
 A few honest warnings before printing:
 
@@ -157,10 +153,10 @@ A few honest warnings before printing:
 firmware/      the board code (see versions above)
 test-sketches/ isolated test sketches (camera, motors)
 webui/         the web control interfaces
-cad/           the 3D models (to be added)
+(CAD)          3D models — download from Releases → cad.zip (SolidWorks)
 hardware/      the BOM and a few reference docs
 images/        photos and GIFs used in this README
-media/         demo videos (phone control, driving, LEDs, assembly)
+media/         demo videos (driving, LEDs, assembly)
 ```
 
 ## Hardware
@@ -261,10 +257,7 @@ interested; same idea for WiFi (placeholders in `wifi_com.h`).
 ## Gallery
 
 <p align="center">
-  <img src="images/render-vs-print-1.jpg" alt="Render vs print, front" width="49%">
-  <img src="images/render-vs-print-2.jpg" alt="Render vs print, side" width="49%">
-</p>
-<p align="center">
+  <img src="images/render-vs-print-2.jpg" alt="Render vs print, side view" width="49%">
   <img src="images/build-electronics.jpg" alt="The drone opened up, electronics visible" width="49%">
 </p>
 
