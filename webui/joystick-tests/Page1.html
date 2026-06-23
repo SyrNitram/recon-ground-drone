@@ -1,0 +1,222 @@
+<!--
+  Recon Ground Drone - adapted file
+  Original code (c) 2022-2023 Martin RYS, released under the MIT License.
+  Adapted from: robotzero.one ESP32-CAM RC Car, with a send-rate limiter from
+  neonious/lowjs_esp32_examples (cellphone_controlled_rc_car, MIT). See THIRD_PARTY.md.
+-->
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width,         initial-scale=1.0,         user-scalable=no"
+    />
+    <title>R6-Drone Controller</title>
+    <style>
+      #container {
+        margin: auto;
+        display: block;
+        width: 90%;
+        height: 40vh;
+        background-color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 7px;
+        touch-action: none;
+      }
+      #item {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(245, 230, 99);
+        border: 10px solid rgba(136, 136, 136, 0.5);
+        border-radius: 50%;
+        touch-action: none;
+        user-select: none;
+      }
+      #item:active {
+        background-color: rgba(168, 218, 220, 1);
+      }
+      #item:hover {
+        cursor: pointer;
+        border-width: 20px;
+      }
+      #area {
+        position: fixed;
+        right: 50;
+        top: 0;
+      }
+
+      #stream {
+        object-fit: contain;
+        width: 95vw;
+        height: 50vh;
+        margin: auto;
+        display: block;
+      }
+
+      figure {
+        height: 49vh;
+        padding: 0;
+        margin: 0;
+        -webkit-margin-before: 0;
+        margin-block-start: 0;
+        -webkit-margin-after: 0;
+        margin-block-end: 0;
+        -webkit-margin-start: 0;
+        margin-inline-start: 0;
+        -webkit-margin-end: 0;
+        margin-inline-end: 0;
+      }
+      figure img {
+        display: block;
+        width: auto;
+        height: 49vh;
+        border-radius: 4px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body style="background: black">
+    <input type="textarea" id="area" disabled />
+    <div id="outerContainer">
+      <figure style="height: 49vh">
+        <div id="stream-container" class="image-container">
+          <img id="stream" src="" />
+        </div>
+      </figure>
+      <div id="container">
+        <div id="item"></div>
+      </div>
+    </div>
+    <script>
+      const view = document.getElementById("stream");
+      const WS_URL = "ws://" + window.location.host + ":82";
+      const ws = new WebSocket(WS_URL);
+
+      ws.onmessage = (message) => {
+        if (message.data instanceof Blob) {
+          var urlObject = URL.createObjectURL(message.data);
+          view.src = urlObject;
+        }
+      };
+
+      var dragItem = document.querySelector("#item");
+      var container = document.querySelector("#container");
+      var containerWidth = container.offsetWidth - item.offsetWidth - 10;
+      var containerHeight = container.offsetHeight - item.offsetHeight - 10;
+      var maxDragHorizontal = containerWidth / 2;
+      var maxDragVertical = containerHeight / 2;
+
+      var maxDrag =
+        maxDragHorizontal > maxDragVertical
+          ? maxDragVertical
+          : maxDragHorizontal;
+
+      document.getElementById("area").value =
+        "width: " +
+        maxDragHorizontal +
+        " height: " +
+        maxDragVertical +
+        " max: " +
+        maxDrag;
+      var active = false;
+      var currentX;
+      var currentY;
+      var initialX;
+      var initialY;
+      var xOffset = 0;
+      var yOffset = 0;
+      var lastText, lastSend, sendTimeout;
+
+      document.addEventListener("touchstart", dragStart, false);
+      document.addEventListener("touchend", dragEnd, false);
+      document.addEventListener("touchmove", drag, false);
+      document.addEventListener("mousedown", dragStart, false);
+      document.addEventListener("mouseup", dragEnd, false);
+      document.addEventListener("mousemove", drag, false);
+
+      function dragStart(e) {
+        if (e.target === dragItem) {
+          active = true;
+          if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX;
+            initialY = e.touches[0].clientY;
+          } else {
+            initialX = e.clientX;
+            initialY = e.clientY;
+          }
+        }
+      }
+
+      function dragEnd(e) {
+        currentX = 0;
+        currentY = 0;
+
+        setTranslate(currentX, currentY, dragItem);
+
+        document.getElementById("area").value =
+          "X: " + currentX + " Y: " + currentY;
+
+        active = false;
+      }
+
+      function drag(e) {
+        if (active) {
+          e.preventDefault();
+          if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+          } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+          }
+
+          if (Math.abs(currentX) > maxDrag)
+            currentX = currentX > 0 ? maxDrag : -maxDrag;
+          if (Math.abs(currentY) > maxDragVertical)
+            currentY = currentY > 0 ? maxDrag : -maxDrag;
+
+          setTranslate(currentX, currentY, dragItem);
+
+          document.getElementById("area").value =
+            "X: " + currentX / maxDrag + " Y: " + currentY / maxDrag;
+        }
+      }
+
+      // limit sending to one message every LIMIT_MS ms
+      // https://github.com/neonious/lowjs_esp32_examples/blob/master/neonious_one/cellphone_controlled_rc_car/www/index.html
+      var LIMIT_MS = 100;
+
+      function send(txt) {
+        var now = new Date().getTime();
+        if (lastSend === undefined || now - lastSend >= LIMIT_MS) {
+          try {
+            ws.send(txt);
+            lastSend = new Date().getTime();
+            return;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        lastText = txt;
+        if (!sendTimeout) {
+          var ms =
+            lastSend !== undefined ? LIMIT_MS - (now - lastSend) : LIMIT_MS;
+          if (ms < 0) ms = 0;
+          sendTimeout = setTimeout(() => {
+            sendTimeout = null;
+            send(lastText);
+          }, ms);
+        }
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        var x = (xPos * 100) / maxDrag;
+        var y = (yPos * 100) / maxDrag;
+        send(x + "," + y);
+      }
+    </script>
+  </body>
+</html>

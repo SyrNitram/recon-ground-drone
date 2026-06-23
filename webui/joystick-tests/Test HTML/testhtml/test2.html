@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p>Press any key on the keyboard in the text field to get the numeric character code</p>
+<input type="text" size="30" onkeypress="sampleKeyCode(event)">
+<p id="demoKey"></p>
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+<script>
+function sampleKeyCode(event) {
+var keycode = (event.keyCode ? event.keyCode : event.which);
+document.getElementById("demoKey").innerHTML = "The Numeric value is: " + keycode;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>   <html>   <head>   <title>R6 Drone Control</title>   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js">
+</script>   <meta name="viewport" content="user-scalable=no">   </head>   <body  style="position: fixed; font-family: 'Gill Sans', 'Gill Sans MT', Calibri,
+ 'Trebuchet MS', sans-serif ;   color:rgb(128, 128, 128);   font-size: xx-large;">   <p style="text-align: center;">   X: <span id="x_coordinate"> </span>   Y:
+ <span id="y_coordinate"> </span>   Speed: <span id="speed"> </span> %   Angle: <span id="angle"> </span> rad   </p>   <canvas id="canvas" name="game"></canvas>"
+          <script>   var canvas, ctx;   window.addEventListener('load', () => {   canvas = document.getElementById('canvas');   ctx = canvas.getContext('2d');   resize();
+    document.addEventListener('mousedown', startDrawing);   document.addEventListener('mouseup', stopDrawing);   document.addEventListener('mousemove', Draw);
+    document.addEventListener('touchstart', startDrawing);   document.addEventListener('touchend', stopDrawing);   document.addEventListener('touchcancel', stopDrawing);
+    document.addEventListener('touchmove', Draw);   window.addEventListener('resize', resize);   document.getElementById("x_coordinate").innerText = 0;
+    document.getElementById("y_coordinate").innerText = 0;   document.getElementById("speed").innerText = 0;   document.getElementById("angle").innerText = 0;
+    });      var width, height, radius, x_orig, y_orig, delta_x, delta_y;   function resize() {   width = window.innerWidth;   radius = 200;   height = radius * 5;
+    ctx.canvas.width = width;   ctx.canvas.height = height;   background();   joystick(width / 2, height / 2);   }   function background() {   x_orig = width / 2;
+    y_orig = height / 2;   ctx.beginPath();   ctx.arc(x_orig, y_orig, radius + 20, 0, Math.PI * 2, true);   ctx.fillStyle = '#ECE5E5';   ctx.fill();   }   function
+ joystick(width, height) {   ctx.beginPath();   ctx.arc(width, height, radius, 0, Math.PI * 2, true);   ctx.fillStyle = '#F08080';   ctx.fill();   }   let coord =
+ { x: 0, y: 0 };   let paint = false;   function getPosition(event) {   e = window.event || e;   var mouse_x = e.clientX || e.touches[0].clientX;   var mouse_y =
+ e.clientY || e.touches[0].clientY;   coord.x = mouse_x - canvas.offsetLeft;   coord.y = mouse_y - canvas.offsetTop;   delta_x = coord.x - x_orig;   delta_y = 
+ -(coord.y - y_orig);   }   function is_it_in_the_circle() {   var current_radius = Math.sqrt(Math.pow(delta_x, 2) + Math.pow(delta_y, 2));   if (radius >= current_radius)
+ return true;   else return false;   }   var intervalId;   var cmd_speed, cmd_angle;   function startDrawing(event) {   paint = true;   getPosition(event);   if (is_it_in_the_circle())
+ {   ctx.clearRect(0, 0, canvas.width, canvas.height);   background();   joystick(coord.x, coord.y);   Draw();   }   cmd_speed = 0;   cmd_angle = 0;
+       intervalId = setInterval(Send, 500);      }   function stopDrawing() {   cmd_speed = 0;   cmd_angle = 0;   $.get("http://192.168.1.164:80/", {an:cmd_angle , sp:cmd_speed});
+       paint = false;   ctx.clearRect(0, 0, canvas.width, canvas.height);   background();   joystick(width / 2, height / 2);   document.getElementById("x_coordinate").innerText =
+ 0;   document.getElementById("y_coordinate").innerText = 0;   document.getElementById("speed").innerText = 0;   document.getElementById("angle").innerText = 
+ 0;      clearTimeout(intervalId);   }      function Draw(event) {   if (paint) {   ctx.clearRect(0, 0, canvas.width, canvas.height);   background();   var x, y, speed;
+    var angle = Math.atan2(  (delta_y), (delta_x)  )  ;   angle = angle.toFixed(1);   if (is_it_in_the_circle()) {   joystick(coord.x, coord.y);   x = coord.x;   y =
+ coord.y;   }   else {   x = radius * Math.cos(angle) + x_orig;   y = radius * (-Math.sin(angle)) + y_orig;   joystick(x, y);   }      getPosition(event);   var speed =
+ Math.round(100 * Math.sqrt(Math.pow(x - x_orig, 2) + Math.pow(y - y_orig, 2)) / radius);   var x_relative = Math.round(x - x_orig);   var y_relative = 
+ Math.round(-y + y_orig);               document.getElementById("x_coordinate").innerText =  x_relative;   document.getElementById("y_coordinate").innerText = 
+ y_relative ;   document.getElementById("speed").innerText = speed;   document.getElementById("angle").innerText = angle;   if(angle <0){   angle = 6.28 + parseFloat(angle);
+    angle = angle.toFixed(1);   }      if(speed <10) speed = 0;   if(speed >99) speed = 99;   cmd_speed = speed;   cmd_angle = angle;         }   }         function Send()
+ {   $.get("http://192.168.1.164:80/", {an:cmd_angle , sp:cmd_speed});   }      </script>      </body>   </html><br>

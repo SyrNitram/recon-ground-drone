@@ -1,0 +1,49 @@
+<!--
+  SPDX-License-Identifier: MIT
+  Copyright (c) 2022-2023 Martin RYS - Recon Ground Drone
+  Released under the MIT License. See LICENSE and THIRD_PARTY.md.
+-->
+<html>
+  <head>
+		<title>R6 Drone Control</title>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  </head>
+  <body>
+    <h1>R6 Drone Control</h1> 
+	
+	<button id="17" class="CTRL" style="height:200px;width:200px">NW</button> 
+	<button id="18" class="CTRL" style="height:200px;width:200px">Forward</button>
+	<button id="19" class="CTRL" style="height:200px;width:200px">NE</button> 
+<!--	
+	<button id="20" class="CTRL" style="height:100px;width:100px">V0</button> 
+	<button id="21" class="CTRL" style="height:100px;width:100px">V1</button> 
+	<button id="22" class="CTRL" style="height:100px;width:100px">V2</button> 
+	<button id="23" class="CTRL" style="height:100px;width:100px">V3</button> 
+	<button id="24" class="CTRL" style="height:100px;width:100px">V4</button> 
+-->
+	
+	<br>
+	<button id="14" class="CTRL" style="height:200px;width:200px">Left</button>
+	<button id="15" class="CTRL" style="height:200px;width:200px">STOP</button>
+	<button id="16" class="CTRL" style="height:200px;width:200px">Right</button> 
+<!--	
+	<button id="25" class="CTRL" style="height:100px;width:100px">V5</button> 
+	<button id="26" class="CTRL" style="height:100px;width:100px">V6</button> 
+	<button id="27" class="CTRL" style="height:100px;width:100px">V7</button> 
+	<button id="28" class="CTRL" style="height:100px;width:100px">V8</button> 
+	<button id="29" class="CTRL" style="height:100px;width:100px">V9</button> 
+-->	
+	<br>
+	<button id="11" class="CTRL" style="height:200px;width:200px">SW</button>
+	<button id="12" class="CTRL" style="height:200px;width:200px">Backward</button>
+	<button id="13" class="CTRL" style="height:200px;width:200px">SE</button> 
+	<br>
+	<button id="10" class="CTRL" style="height:200px;width:200px">Toggle LED</button> <!-- button for pin 13 -->
+	
+	<script type="text/javascript">
+		$(document).ready(function(){$(".CTRL").click(function(){var p = $(this).attr('id'); $.get("http://192.168.1.164:80/", {cmd:p});});});
+		$(document).keypress(function(event){var keycode = (event.keyCode ? event.keyCode : event.which);$.get("http://192.168.1.164:80/", {cmd:(keycode - 48 + 10)});});
+	</script>
+	
+  </body>
+</html>

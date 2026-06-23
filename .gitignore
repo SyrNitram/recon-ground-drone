@@ -1,0 +1,25 @@
+# Build artifacts
+.pio/
+build/
+*.bin
+*.elf
+*.hex
+*.o
+*.d
+
+# Secrets / local config (never commit your real WiFi credentials!)
+secrets.h
+config.h
+*.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Arduino
+*.tmp

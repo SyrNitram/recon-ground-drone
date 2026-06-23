@@ -1,0 +1,40 @@
+<!--
+  SPDX-License-Identifier: MIT
+  Copyright (c) 2022-2023 Martin RYS - Recon Ground Drone
+  Released under the MIT License. See LICENSE and THIRD_PARTY.md.
+-->
+<html>
+	<head>
+		<title>ESP8266 LED Control</title>
+		<br>
+	</head>
+	<body>
+	
+	<!-- in the <button> tags below the ID attribute is the value sent to the arduino -->
+	<br>
+	<button id="1" class="CTRL">----NW----</button> 
+	<button id="2" class="CTRL">--Forward--</button>
+	<button id="3" class="CTRL">----NE----</button> 
+	<br><br>
+	<button id="4" class="CTRL">----Left----</button>
+	<button id="5" class="CTRL">----STOP----</button>
+	<button id="6" class="CTRL">----Right---</button> 
+	<br><br>
+	<button id="7" class="CTRL">----SW----</button>
+	<button id="8" class="CTRL">-Backward-</button>
+	<button id="9" class="CTRL">----SE----</button> 
+	<br><br><br>
+	<button id="0" class="CTRL">Toggle LED</button> <!-- button for pin 13 -->
+		
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".CTRL").click(function(){
+				var p = $(this).attr('id'); // get id value (i.e. pin13, pin12, or pin11)
+				// send HTTP GET request to the IP address with the parameter "pin" and value "p", then execute the function
+				$.get("http://192.168.1.164:80/", {pin:p}); // execute get request
+			});
+		});
+	</script>
+	</body>
+</html>
